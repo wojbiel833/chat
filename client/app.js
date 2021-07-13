@@ -1,3 +1,12 @@
+// Socket
+const socket = io();
+
+socket.on("message", ({ author, content }) => addMessage(author, content));
+socket.on("join", (nick, id) => login(nick));
+socket.on("newUser", (userName) => addMessage(author: userName, content: `${userName} has joined the conversation!`));
+socket.on("removeUser", (userName) => addMessage(author: userName, content: `${userName} has left the conversation... :(`));
+
+// Functionality--------------------------------------
 const loginForm = document.getElementById("welcome-form");
 const messagesSection = document.getElementById("messages-section");
 const messagesList = document.getElementById("messages-list");
@@ -45,12 +54,16 @@ function addMessage(author, content) {
 const sendMessage = function (e) {
   e.preventDefault();
 
+  let messageContent = messageContentInput.value;
+
   if (messageContentInput == "") {
     alert("You can't send an empty message");
   } else {
     addMessage(userName, messageContentInput.value);
+    socket.emit("message", { author: userName, content: messageContent });
     messageContentInput.value = "";
   }
 };
 
 addMessageForm.addEventListener("submit", sendMessage);
+addMessageForm.addEventListener("newUser", sendMessage);
