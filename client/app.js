@@ -2,9 +2,19 @@
 const socket = io();
 
 socket.on("message", ({ author, content }) => addMessage(author, content));
-socket.on("join", (nick, id) => login(nick));
-socket.on("newUser", (userName) => addMessage(author: userName, content: `${userName} has joined the conversation!`));
-socket.on("removeUser", (userName) => addMessage(author: userName, content: `${userName} has left the conversation... :(`));
+socket.on("join", ({ nick, id }) => login(nick));
+socket.on("newUser", ({ userName }) =>
+  addMessage({
+    author: userName,
+    content: `${userName} has joined the conversation!`,
+  })
+);
+socket.on("removeUser", (userName) =>
+  addMessage({
+    author: userName,
+    content: `${userName} has left the conversation... :(`,
+  })
+);
 
 // Functionality--------------------------------------
 const loginForm = document.getElementById("welcome-form");
