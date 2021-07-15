@@ -3,17 +3,11 @@ const socket = io();
 
 socket.on("message", ({ author, content }) => addMessage(author, content));
 socket.on("join", ({ nick, id }) => login(nick));
-socket.on("newUser", ({ userName }) =>
-  addMessage({
-    author: userName,
-    content: `${userName} has joined the conversation!`,
-  })
+socket.on("newUser", (userName) =>
+  addMessage("Chat bot", `${userName} has joined the conversation!`, true)
 );
 socket.on("removeUser", (userName) =>
-  addMessage({
-    author: userName,
-    content: `${userName} has left the conversation... :(`,
-  })
+  addMessage("Chat bot", `${userName} has left the conversation... :(`, true)
 );
 
 // Functionality--------------------------------------
@@ -38,20 +32,20 @@ const login = function (e) {
     userName = userNameInput;
     loginForm.classList.remove("show");
     messagesSection.classList.add("show");
+    socket.emit("join", userName);
   }
 };
 
 messagesSection.classList.remove("show");
 
-loginForm.addEventListener("submit", login);
-
 // Add message form
 
-function addMessage(author, content) {
+function addMessage(author, content, isBot = false) {
   const message = document.createElement("li");
   message.classList.add("message");
   message.classList.add("message--received");
   if (author === userName) message.classList.add("message--self");
+  if (isBot) message.classList.add("message__bot");
   message.innerHTML = `
       <h3 class="message__author">${userName === author ? "You" : author}</h3>
       <div class="message__content">
@@ -76,4 +70,4 @@ const sendMessage = function (e) {
 };
 
 addMessageForm.addEventListener("submit", sendMessage);
-addMessageForm.addEventListener("newUser", sendMessage);
+loginForm.addEventListener("submit", login);

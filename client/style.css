@@ -89,6 +89,13 @@ p {
   color: #999;
   text-align: right;
 }
+.message__bot {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #999;
+  text-align: right;
+  font-style: italic;
+}
 
 .message__content {
   background: rgb(68, 68, 68);
