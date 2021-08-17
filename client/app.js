@@ -60,7 +60,7 @@ const sendMessage = function (e) {
 
   let messageContent = messageContentInput.value;
 
-  if (messageContentInput == "") {
+  if (messageContent == "") {
     alert("You can't send an empty message");
   } else {
     addMessage(userName, messageContentInput.value);

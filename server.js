@@ -39,12 +39,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("newUser", nick);
   });
 
-  socket.on("disconnect", (nick) => {
-    // dodalem nick
+  socket.on("disconnect", () => {
     console.log("Oh, socket " + socket.id + " has left");
     const user = users.find((item) => item.id === socket.id);
     const index = users.findIndex((item) => item.id === socket.id);
-    socket.broadcast.emit("removeUser", nick); //zmienilem na nick i jest "transport closed"... było null gdy bez arg(nick) i user w emitterze
+    socket.broadcast.emit("removeUser", user.userName);
     users.splice(index, 1);
   });
   console.log("I've added a listener on message and disconnect events \n");
